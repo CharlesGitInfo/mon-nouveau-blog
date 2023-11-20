@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>L'Aquarium de Charles</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'> <!-- Police Inconsolata-->
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+    <style>
+       
+        body {
+            background-image: url('https://www.pbs.org/wnet/nature/files/2023/06/noaa-8EXZXZrj3Tw-unsplash-scaled-e1687878941182-1280x720.jpg'); 
+            background-size: cover; 
+            color: #00356d; 
+            font-family: 'Inconsolata'; 
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styles spécifiques à la container */
+        .container {
+            width: 90%; /* Ajuster la largeur du conteneur */
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        /* Styles spécifiques à la page header */
+        .page-header {
+        background-image: url('https://www.planetesauvage.com/fileadmin/_processed_/a/9/csm_dauphin-bandeau_db916c1aa3.jpg');
+        background-size: cover; /* Ajuste la taille de l'image pour couvrir tout l'en-tête */
+        padding: 35px;
+    }
+
+        .page-header h1 a {
+            color: #004ea2; 
+            font-size: 35pt;
+            text-decoration: none;
+            font-weight: bold; /* Texte en gras */
+        }
+
+        /* Styles spécifiques à la section characters et equipments */
+        .characters h2,
+        .equipments h2 {
+            color: #004ea2; 
+            border-bottom: 2px solid #1575db; /* Ligne de séparation */
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            font-weight: bold; /* Texte en gras */
+            font-size: 24px; /* Taille de police plus grande */
+        }
+
+        /* Styles spécifiques aux tableaux */
+        .characters table,
+        .equipments table {
+            width: 100%; /* Tableau prend toute la largeur disponible */
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .characters th,
+        .characters td,
+        .equipments th,
+        .equipments td {
+            border: 1px solid #333; /* Bordures pour les cellules */
+            padding: 8px;
+            font-weight: bold; /* Texte en gras */
+            font-size: 16px; /* Taille de police */
+            color: #80f7ff; /* Couleur du texte en blanc */
+        }
+
+        .characters th,
+        .equipments th {
+            background-color: #1a1a1a; /* Couleur de fond pour les en-têtes */
+            color: #1575db;
+            text-align: left;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #000000; /* Couleur du texte en blanc */
+        }
+
+        .footer a {
+            color: #01366f; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="title-text"><a href="/">L'Aquarium de Charles</a></h1>
+        </div>
+    
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+              
+            <div class="characters">
+                <h2>Animaux marins</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom de l'animal</th>
+                            <th>État</th>
+                            <th>Race</th>
+                            <th>Lieu</th>
+                            <th>Image exemplaire</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for character in characters %}
+                        <tr>
+                            <td><a href="{% url 'character_detail' id_character=character.id_character %}">{{ character.id_character }}</a></td>
+                            <td>{{ character.etat }}</td>
+                            <td>{{ character.race }}</td>
+                            <td>{{ character.lieu.id_equip }}</td>
+                            <td><img src="{{ character.photo }}" alt="Photo de {{ character.id_character }}" style="width: 150px;"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Section des Équipements -->
+            <div class="equipments">
+                <h2>Lieu</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom de lieu</th>
+                            <th>Disponibilité</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for equipement in equipements %}
+                        <tr>
+                            <td>{{ equipement.id_equip }}</td> 
+                            <td>{{ equipement.disponibilite }}</td>
+                            <td><img src="{{ equipement.photo }}" alt="Photo de {{ equipement.id_equip }}" style="width: 100px;"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="footer">
+                <p>Retour à la <a href="{% url 'character_list' %}">Liste des animaux de l'aquarium</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
